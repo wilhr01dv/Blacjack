@@ -1,3 +1,4 @@
+// Referencias a los elementos de la interfaz.
 const botonNuevo = document.querySelector("#btn-danger");
 const botonCarta = document.querySelector("#btn-success");
 const botonDetener = document.querySelector("#btn-warning");
@@ -7,6 +8,7 @@ const puntosJugador = document.querySelector("#puntos-jugador");
 const puntosComputadora = document.querySelector("#puntos-computadora");
 const mensaje = document.querySelector("#mensaje");
 
+// Configuración de los palos y las cartas especiales.
 const tipos = ["C", "D", "H", "S"];
 const especiales = ["A", "J", "Q", "K"];
 
@@ -37,6 +39,7 @@ function crearBaraja() {
 }
 
 function crearCarta(nombre, tipo, puntos) {
+	// Cada carta incluye sus puntos y la ruta de su imagen.
 	return {
 		nombre,
 		puntos,
@@ -50,6 +53,7 @@ function sacarCarta() {
 }
 
 function calcularPuntos(mano) {
+	// Un as vale 11, pero baja a 1 si la mano supera 21.
 	let total = mano.reduce((suma, carta) => suma + carta.puntos, 0);
 	let ases = mano.filter((carta) => carta.nombre === "A").length;
 
@@ -70,16 +74,17 @@ function crearElementoCarta(carta) {
 	return imagen;
 }
 
-function mostrarCarta(carta, contenedor) {
-    const imagen = document.createElement("img");
+function crearCartaOculta() {
+	// Carta de revés (trasera) para ocultar la carta tapada del crupier.
+	const carta = document.createElement("div");
+	carta.className = "carta carta-oculta";
+	carta.title = "Carta oculta";
 
-    imagen.src = `assets/cartas/${carta.nombre}${carta.palo}.png`;
-    imagen.classList.add("carta");
-
-    contenedor.appendChild(imagen);
+	return carta;
 }
 
 function dibujarJuego() {
+	// Redibuja las cartas y los puntos después de cada acción.
 	cartasJugador.replaceChildren();
 	cartasComputadora.replaceChildren();
 
@@ -87,12 +92,23 @@ function dibujarJuego() {
 		cartasJugador.appendChild(crearElementoCarta(carta));
 	});
 
-	manoComputadora.forEach((carta) => {
-		cartasComputadora.appendChild(crearElementoCarta(carta));
-	});
+	if (partidaTerminada) {
+		// Al terminar la partida se muestran todas las cartas de la computadora.
+		manoComputadora.forEach((carta) => {
+			cartasComputadora.appendChild(crearElementoCarta(carta));
+		});
+		puntosComputadora.textContent = calcularPuntos(manoComputadora);
+	} else {
+		// Durante la partida solo se ve la primera carta del crupier;
+		// la segunda (la carta tapada) permanece oculta.
+		cartasComputadora.appendChild(crearElementoCarta(manoComputadora[0]));
+		cartasComputadora.appendChild(crearCartaOculta());
+
+		// Los puntos visibles solo cuentan las cartas descubiertas.
+		puntosComputadora.textContent = calcularPuntos([manoComputadora[0]]);
+	}
 
 	puntosJugador.textContent = calcularPuntos(manoJugador);
-	puntosComputadora.textContent = calcularPuntos(manoComputadora);
 }
 
 function iniciarJuego() {
@@ -105,6 +121,7 @@ function iniciarJuego() {
 	botonDetener.disabled = false;
 	dibujarJuego();
 
+	// Comprueba si algún jugador comienza con Blackjack.
 	const puntosInicialesJugador = calcularPuntos(manoJugador);
 	const puntosInicialesComputadora = calcularPuntos(manoComputadora);
 
@@ -131,6 +148,7 @@ function pedirCarta() {
 function detenerJuego() {
 	if (partidaTerminada) return;
 
+	// La computadora roba hasta alcanzar al menos 17 puntos.
 	while (calcularPuntos(manoComputadora) < 17) {
 		manoComputadora.push(sacarCarta());
 	}
@@ -148,6 +166,7 @@ function detenerJuego() {
 }
 
 function terminarJuego(resultado) {
+	// Bloquea las acciones y muestra el resultado final.
 	partidaTerminada = true;
 	botonCarta.disabled = true;
 	botonDetener.disabled = true;
@@ -155,6 +174,7 @@ function terminarJuego(resultado) {
 	dibujarJuego();
 }
 
+// Conecta cada botón con la acción correspondiente.
 botonNuevo.addEventListener("click", iniciarJuego);
 botonCarta.addEventListener("click", pedirCarta);
 botonDetener.addEventListener("click", detenerJuego);
