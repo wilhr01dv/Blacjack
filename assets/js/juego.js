@@ -88,10 +88,8 @@ function dibujarJuego() {
 		cartasJugador.appendChild(crearElementoCarta(carta));
 	});
 
-	manoComputadora.forEach((carta, indice) => {
-		if (computadoraRevelada || indice === 0) {
-			cartasComputadora.appendChild(crearElementoCarta(carta));
-		}
+	manoComputadora.forEach((carta) => {
+		cartasComputadora.appendChild(crearElementoCarta(carta));
 	});
 
 	puntosJugador.textContent = calcularPuntos(manoJugador);
