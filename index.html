@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,18 +15,24 @@
     <!-- Contenedor de botones -->
      <div class ="row mt-2">
         <div id="div-botones">
-            <button id="btn-danger">Nuevo juego</button>
-            <button id="btn-success">Pedir carta</button>
-            <button id="btn-warning">Detener</button>
+            <button id="btn-danger" type="button">Nuevo juego</button>
+            <button id="btn-success" type="button">Pedir carta</button>
+            <button id="btn-warning" type="button">Detener</button>
         </div>
      </div>
      <!-- Contenedor de cartas -->
-      <div class ="row container">
-        <div class=" col">
-            <h1>Jugador 1 - <small>0</small></h1>
-        </div>
-      </div>
-    <script src="assets/js/script.js"></script>
+            <main class="container">
+                <section class="mesa">
+                        <h2>Jugador 1 - <small id="puntos-jugador">0</small></h2>
+                        <div id="cartas-jugador" class="cartas"></div>
+                </section>
+                <section class="mesa">
+                        <h2>Computadora - <small id="puntos-computadora">0</small></h2>
+                        <div id="cartas-computadora" class="cartas"></div>
+                </section>
+                <p id="mensaje" class="mensaje"></p>
+            </main>
+        <script src="assets/js/juego.js"></script>
     
 </body>
 </html>
