@@ -14,7 +14,6 @@ let mazo = [];
 let manoJugador = [];
 let manoComputadora = [];
 let partidaTerminada = false;
-let computadoraRevelada = false;
 
 function crearBaraja() {
 	mazo = [];
@@ -93,9 +92,7 @@ function dibujarJuego() {
 	});
 
 	puntosJugador.textContent = calcularPuntos(manoJugador);
-	puntosComputadora.textContent = computadoraRevelada
-		? calcularPuntos(manoComputadora)
-		: calcularPuntos([manoComputadora[0]]);
+	puntosComputadora.textContent = calcularPuntos(manoComputadora);
 }
 
 function iniciarJuego() {
@@ -103,7 +100,6 @@ function iniciarJuego() {
 	manoJugador = [sacarCarta(), sacarCarta()];
 	manoComputadora = [sacarCarta(), sacarCarta()];
 	partidaTerminada = false;
-	computadoraRevelada = false;
 	mensaje.textContent = "";
 	botonCarta.disabled = false;
 	botonDetener.disabled = false;
@@ -128,13 +124,12 @@ function pedirCarta() {
 	dibujarJuego();
 
 	if (calcularPuntos(manoJugador) > 21) {
-		terminarJuego("Perdiste: te pasaste de 21.", false);
+		terminarJuego("Perdiste: te pasaste de 21.");
 	}
 }
 
 function detenerJuego() {
 	if (partidaTerminada) return;
-	computadoraRevelada = true;
 
 	while (calcularPuntos(manoComputadora) < 17) {
 		manoComputadora.push(sacarCarta());
@@ -152,9 +147,8 @@ function detenerJuego() {
 	}
 }
 
-function terminarJuego(resultado, revelarComputadora = true) {
+function terminarJuego(resultado) {
 	partidaTerminada = true;
-	computadoraRevelada = revelarComputadora;
 	botonCarta.disabled = true;
 	botonDetener.disabled = true;
 	mensaje.textContent = resultado;
