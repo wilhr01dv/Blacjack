@@ -49,6 +49,11 @@ function crearCarta(nombre, tipo, puntos) {
 }
 
 function sacarCarta() {
+	// Si el mazo se agota, se arma una baraja nueva para poder seguir jugando.
+	if (mazo.length === 0) {
+		crearBaraja();
+	}
+
 	return mazo.pop();
 }
 
