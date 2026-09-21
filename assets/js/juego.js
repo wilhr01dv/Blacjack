@@ -16,7 +16,7 @@ let manoComputadora = [];
 let partidaTerminada = false;
 let computadoraRevelada = false;
 
-function crearMazo() {
+function crearBaraja() {
 	mazo = [];
 
 	// Crea las cartas numeradas del 2 al 10 para cada tipo.
@@ -34,7 +34,7 @@ function crearMazo() {
 		}
 	}
 
-	mazo.sort(() => Math.random() - 0.5);
+	mazo = _.shuffle(mazo);
 }
 
 function crearCarta(nombre, tipo, puntos) {
@@ -101,7 +101,7 @@ function dibujarJuego() {
 }
 
 function iniciarJuego() {
-	crearMazo();
+	crearBaraja();
 	manoJugador = [sacarCarta(), sacarCarta()];
 	manoComputadora = [sacarCarta(), sacarCarta()];
 	partidaTerminada = false;
